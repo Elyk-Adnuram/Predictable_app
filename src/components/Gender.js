@@ -12,7 +12,7 @@ const Gender = ({ name }) => {
       if (name !== "") {
         const res = await fetch(`https://api.genderize.io?name=${name}`);
         const data = await res.json();
-        setGenderInfo(data); // setGender will set the state for displaying the API data
+        setGenderInfo(JSON.stringify(data.gender)); // setGender will set the state for displaying the API data
         console.log(genderInfo);
       } else {
         alert("Please enter a surname");
@@ -24,9 +24,8 @@ const Gender = ({ name }) => {
 
   return (
     <>
-      <CustomizedButtons onClick={fetchGenderData} buttonName="Estimate Gender" />
-      <p>Your predicted gender is AGE is: {}</p>
-      <p>The probability is: {}</p>
+      <CustomizedButtons handleClick={fetchGenderData} buttonName="Estimate Gender" />
+      <p>Your predicted gender is: {genderInfo}</p>
     </>
   );
 };

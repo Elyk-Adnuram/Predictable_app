@@ -27,6 +27,8 @@ function App() {
         aria-required
       />
       <br />
+      <br />
+      <br />
       <Nationality name={name} />
       <Age name={name} />
       <Gender name={name} />

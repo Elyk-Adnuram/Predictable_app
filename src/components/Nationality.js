@@ -26,9 +26,13 @@ const Nationality = ({ name }) => {
 
   return (
     <>
-      <CustomizedButtons onClick={fetchNationalityData} buttonName="Predict Nationality" />
-      <p>Your predicted nationality is: {JSON.stringify(nationalityInfo.country_id)}</p>
-      <p>The probability is: {JSON.stringify(nationalityInfo.probability)}</p>
+      <CustomizedButtons handleClick={fetchNationalityData} buttonName="Predict Nationality" />
+
+      <p>
+        Based on the name "{name}", there is a
+        {Math.round(Number(nationalityInfo.probability) * 100)} percent probability that your
+        nationality is {JSON.stringify(nationalityInfo.country_id)}
+      </p>
     </>
   );
 };
