@@ -1,48 +1,60 @@
 import "./App.css";
-// import Nationality from "./components/Nationality";
-// import Age from "./components/Age";
-// import Gender from "./components/Gender";
-import CustomizedButtons from "./Button";
+import CustomizedButtons from "./components/Button";
 import { useState, useRef, useEffect } from "react";
 
 function App() {
   const [name, setName] = useState(""); // state created for user input
-  const [userInfo, setUserInfo] = useState({
+  const [nationalityInfo, setNationalityInfo] = useState({
     country_id: "",
     probability: "",
-    gender: "",
-    age: "",
   });
+  const [ageInfo, setAgeInfo] = useState("");
+  const [genderInfo, setGenderInfo] = useState("");
   const inputRef = useRef(); //useRef initialized
   //useRef hook used to auto-focus on an input field
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
-  async function fetchData() {
-    try {
-      if (name && typeof name === "string" && name.trim().length > 0) {
-        const res1 = await fetch(`https://api.nationalize.io?name=${encodeURIComponent(name)}`);
-        const data1 = await res1.json();
-        const res2 = await fetch(`https://api.agify.io?name=${encodeURIComponent(name)}`);
-        const data2 = await res2.json();
-        const res3 = await fetch(`https://api.genderize.io?name=${encodeURIComponent(name)}`);
-        const data3 = await res3.json();
-        setUserInfo.country_id(data1.country[0].country_id); // setNationality will set the state for displaying the API data
-        setUserInfo.probability(data1.country[0].probability);
-        setUserInfo.age(data2.age);
-        setUserInfo.gender(data3.gender);
-      } else {
-        alert("Please enter a valid surname");
-      }
-    } catch (err) {
-      console.log("An error has occurred: " + err.message);
+  //regex to ensure user only enters letters before making API call
+  const isNameValid = (name) => {
+    const regex = /^[a-zA-Z\s]+$/;
+    return regex.test(name);
+  };
+
+  // Perform API calls to fetch data
+  const fetchData = async () => {
+    if (!name || !isNameValid(name) || name.trim().length === 0) {
+      alert("Please enter a valid name");
+      return;
     }
-  }
+    //used Promise.all to fetch all the data at once
+    try {
+      const [nationalityRes, ageRes, genderRes] = await Promise.all([
+        fetch(`https://api.nationalize.io?name=${encodeURIComponent(name)}`),
+        fetch(`https://api.agify.io?name=${encodeURIComponent(name)}`),
+        fetch(`https://api.genderize.io?name=${encodeURIComponent(name)}`),
+      ]);
+      //used destructuring to assign the data from the API responses to variables
+      const [nationalityData, ageData, genderData] = await Promise.all([
+        nationalityRes.json(),
+        ageRes.json(),
+        genderRes.json(),
+      ]);
+
+      setNationalityInfo(nationalityData.country[0]);
+      setAgeInfo(JSON.stringify(ageData.age));
+      setGenderInfo(JSON.stringify(genderData.gender));
+      setName("");
+    } catch (error) {
+      console.error("An error has occurred: ", error.message);
+    }
+  };
 
   return (
     <div className="App">
-      <h1>Check your predicted Nationality and Estimated Age</h1>
+      <h1>Predictable</h1>
+      <h3>Enter your name and we will predict your nationality, age and gender.</h3>
       <input
         ref={inputRef}
         placeholder="Please enter your name"
@@ -54,18 +66,19 @@ function App() {
       />
       <br />
       <br />
-      {/* <br />
-      <Nationality name={name} />
-      <Age name={name} />
-      <Gender name={name} /> */}
-      <CustomizedButtons handleClick={fetchData} buttonName="Predict It All" />
 
-      <p>
-        Based on the name "{name}", there is a{Math.round(Number(userInfo.probability) * 100)}{" "}
-        percent probability that your nationality is {JSON.stringify(userInfo.country_id)}
-        <p>Your predicted gender is: {userInfo.gender}</p>
-        <p>Your estimated AGE is: {userInfo.age}</p>
-      </p>
+      <CustomizedButtons handleClick={fetchData} buttonName="Go For It!" />
+      {nationalityInfo && ageInfo && genderInfo && (
+        <>
+          <p>
+            Based on the name "{name}", there is a
+            {Math.round(Number(nationalityInfo.probability) * 100)} percent probability that your
+            nationality is {JSON.stringify(nationalityInfo.country_id)}
+          </p>
+          <p>Your predicted gender is: {genderInfo}</p>
+          <p>Your estimated AGE is: {ageInfo}</p>
+        </>
+      )}
     </div>
   );
 }
