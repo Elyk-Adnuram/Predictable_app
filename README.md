@@ -8,9 +8,9 @@ This application predicts the name, age and gender of a user based on a name ent
 
 This application utilizes the below API's
 <ul>
-  <li>[https://nationalize.io/] (https://nationalize.io/)</li>
- <li>[https://genderize/](https://genderize.io/)</li>
-  <li>[ https://agify.io/](https://agify.io/)</li>
+  <li>[Nationalize API](https://nationalize.io/)</li>
+ <li>[Genderize API](https://genderize.io/)</li>
+  <li>[ Agify API](https://agify.io/)</li>
 </ul>
 
 
