@@ -2,17 +2,22 @@ import "./App.css";
 import CustomizedButtons from "./components/Button";
 import { useState, useRef, useEffect } from "react";
 import * as React from "react";
-import SimpleAlert from "./components/SimpleAlert";
+// import SimpleAlert from "./components/SimpleAlert";
+
+import Alert from "@mui/material/Alert";
+// import CheckIcon from "@mui/icons-material/Check";
 
 function App() {
   const [name, setName] = useState(""); // state created for user input
-
   const [ageInfo, setAgeInfo] = useState("");
   const [genderInfo, setGenderInfo] = useState("");
   const [nationalityInfo, setNationalityInfo] = useState({
     country_id: "",
     probability: "",
   });
+  const [alert, setAlert] = useState(false);
+  //TODO add a "loading state" for when data is being fetched
+
   const inputRef = useRef(); //useRef initialized
   //useRef hook used to auto-focus on an input field
   useEffect(() => {
@@ -28,8 +33,7 @@ function App() {
   // Perform API calls to fetch data
   const fetchData = async () => {
     if (!name || !isNameValid(name) || name.trim().length === 0) {
-      <SimpleAlert />;
-      alert("Please enter a valid name");
+      setAlert(true);
       return;
     }
     //used Promise.all to fetch all the data at once
@@ -45,7 +49,7 @@ function App() {
         ageRes.json(),
         genderRes.json(),
       ]);
-
+      setAlert(false);
       setNationalityInfo(nationalityData.country[0]);
       setAgeInfo(JSON.stringify(ageData.age));
       setGenderInfo(JSON.stringify(genderData.gender));
@@ -69,6 +73,8 @@ function App() {
         aria-required
       />
       <br />
+      {alert ? <Alert severity="error">Please enter a valid name</Alert> : null}
+
       <br />
 
       <CustomizedButtons handleClick={fetchData} buttonName="Go For It!" />
