@@ -1,24 +1,18 @@
 import "./App.css";
 import CustomizedButtons from "./components/Button";
-import CustomizedButtons from "./components/Button";
 import { useState, useRef, useEffect } from "react";
 import * as React from "react";
 import SimpleAlert from "./components/SimpleAlert";
 
 function App() {
   const [name, setName] = useState(""); // state created for user input
-  const [nationalityInfo, setNationalityInfo] = useState({
-    country_id: "",
-    probability: "",
-  });
+
   const [ageInfo, setAgeInfo] = useState("");
   const [genderInfo, setGenderInfo] = useState("");
   const [nationalityInfo, setNationalityInfo] = useState({
     country_id: "",
     probability: "",
   });
-  const [ageInfo, setAgeInfo] = useState("");
-  const [genderInfo, setGenderInfo] = useState("");
   const inputRef = useRef(); //useRef initialized
   //useRef hook used to auto-focus on an input field
   useEffect(() => {
