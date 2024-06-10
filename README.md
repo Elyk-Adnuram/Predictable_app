@@ -2,6 +2,11 @@
 
 This application predicts the name, age and gender of a user based on a name entered into the application.
 
+## Deployment
+
+View the deployed application here: https://predictable.netlify.app/
+
+
 ## API Reference
 
 This application utilizes the below API's
@@ -20,3 +25,5 @@ This application utilizes the below API's
 ## Useful Resources
 
 - [Material UI](https://mui.com/material-ui/)
+- [Favicon generator] (https://favicon.io/)
+  
