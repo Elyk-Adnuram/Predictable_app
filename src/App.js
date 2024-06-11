@@ -1,11 +1,7 @@
 import "./App.css";
 import CustomizedButtons from "./components/Button";
 import { useState, useRef, useEffect } from "react";
-import * as React from "react";
-// import SimpleAlert from "./components/SimpleAlert";
-
-import Alert from "@mui/material/Alert";
-// import CheckIcon from "@mui/icons-material/Check";
+import SimpleAlert from "./components/SimpleAlert";
 
 function App() {
   const [name, setName] = useState(""); // state created for user input
@@ -16,7 +12,7 @@ function App() {
     probability: "",
   });
   const [alert, setAlert] = useState(false);
-  //TODO add a "loading state" for when data is being fetched
+  const [loading, setLoading] = useState(false);
 
   const inputRef = useRef(); //useRef initialized
   //useRef hook used to auto-focus on an input field
@@ -38,6 +34,7 @@ function App() {
     }
     //used Promise.all to fetch all the data at once
     try {
+      setLoading(true);
       const [nationalityRes, ageRes, genderRes] = await Promise.all([
         fetch(`https://api.nationalize.io?name=${encodeURIComponent(name)}`),
         fetch(`https://api.agify.io?name=${encodeURIComponent(name)}`),
@@ -52,13 +49,16 @@ function App() {
       setAlert(false);
       setNationalityInfo(nationalityData.country[0]);
       setAgeInfo(JSON.stringify(ageData.age));
-      setGenderInfo(JSON.stringify(genderData.gender));
+      setGenderInfo(genderData.gender);
       setName("");
+      setLoading(false);
     } catch (error) {
       console.error("An error has occurred: ", error.message);
     }
   };
 
+  const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" });
+  // regionNamesInEnglish.of;
   return (
     <div className="App">
       <h1 className="header">Predictable</h1>
@@ -73,20 +73,22 @@ function App() {
         aria-required
       />
       <br />
-      {alert ? <Alert severity="error">Please enter a valid name</Alert> : null}
+      {alert && <SimpleAlert />}
 
       <br />
 
       <CustomizedButtons handleClick={fetchData} buttonName="Go For It!" />
+
+      {loading && <h3>Loading ...</h3>}
       {nationalityInfo && ageInfo && genderInfo && (
         <div className="output">
           <p>
             Based on the name entered, there is a{" "}
-            {Math.round(Number(nationalityInfo.probability) * 100)} percent probability that your
-            nationality is {JSON.stringify(nationalityInfo.country_id)}
+            {Math.round(Number(nationalityInfo.probability) * 100)} percent probability that you are
+            from {regionNamesInEnglish.of(nationalityInfo.country_id)}.
           </p>
           <p>Your predicted gender is: {genderInfo}</p>
-          <p>Your estimated AGE is: {ageInfo}</p>
+          <p>Your estimated age is: {ageInfo}</p>
         </div>
       )}
     </div>
