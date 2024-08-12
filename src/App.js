@@ -1,7 +1,7 @@
 import "./App.css";
 import CustomizedButtons from "./components/Button";
 import { useState, useRef, useEffect } from "react";
-import SimpleAlert from "./components/SimpleAlert";
+import AlertDialog from "./components/AlertDialog";
 
 function App() {
   const [name, setName] = useState(""); // state created for user input
@@ -11,8 +11,12 @@ function App() {
     country_id: "",
     probability: "",
   });
-  const [alert, setAlert] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const inputRef = useRef(); //useRef initialized
   //useRef hook used to auto-focus on an input field
@@ -29,7 +33,7 @@ function App() {
   // Perform API calls to fetch data
   const fetchData = async () => {
     if (!name || !isNameValid(name) || name.trim().length === 0) {
-      setAlert(true);
+      setOpen(true);
       return;
     }
     //used Promise.all to fetch all the data at once
@@ -46,7 +50,7 @@ function App() {
         ageRes.json(),
         genderRes.json(),
       ]);
-      setAlert(false);
+      setOpen(false);
       setNationalityInfo(nationalityData.country[0]);
       setAgeInfo(JSON.stringify(ageData.age));
       setGenderInfo(genderData.gender);
@@ -57,8 +61,9 @@ function App() {
     }
   };
 
+  //determine country based on country code
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" });
-  // regionNamesInEnglish.of;
+
   return (
     <div className="App">
       <h1 className="header">Predictable</h1>
@@ -73,7 +78,7 @@ function App() {
         aria-required
       />
       <br />
-      {alert && <SimpleAlert />}
+      {open && <AlertDialog open={open} handleClose={handleClose} />}
 
       <br />
 
