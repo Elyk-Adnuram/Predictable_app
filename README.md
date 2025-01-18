@@ -6,7 +6,6 @@ This application predicts the name, age and gender of a user based on a name ent
 
 View the deployed application here: https://predictable.netlify.app/
 
-
 ## API Reference
 
 This application utilizes the below API's
@@ -22,8 +21,14 @@ This application utilizes the below API's
 - React
 - Material UI
 
+### Something new I learnt
+
+- The CSS property called "Backdrop-filter". Find out more in resources link
+- The CSS clamp() function. More in resources section
+
 ## Useful Resources
 
 - [Material UI](https://mui.com/material-ui/)
 - [Favicon generator] (https://favicon.io/)
-  
+- [Backdrop-filter](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter)
+- [Clamp()](https://developer.mozilla.org/en-US/docs/Web/CSS/clamp)

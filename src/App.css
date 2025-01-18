@@ -1,53 +1,50 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap"); */
-/* 
-@font-face {
-  font-family: Roboto;
-  src: url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-} */
-
 body {
-  font-family: Roboto, sans-serif;
-  box-sizing: border-box;
-  height: 100dvh;
-  color: whitesmoke;
-  width: 365px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background: #bbd2c5 no-repeat; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to bottom, #536976, #bbd2c5) no-repeat; /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #536976, #bbd2c5) no-repeat; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  line-height: 2.5rem;
+  font-family: Roboto, system-ui, sans-serif;
+  min-height: 100dvh;
   margin: 0;
-  padding: 0;
+  padding: 1rem;
+  color: whitesmoke;
+  background: linear-gradient(to bottom, #536976, #bbd2c5) no-repeat fixed;
+  line-height: 1.5;
 }
 
 .App {
-  width: 100%;
+  width: min(100%, 800px);
   margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header {
-  font-size: 3.5rem;
-  margin: 0.75em;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin: 0.75em 0;
+  padding-bottom: 0.5em;
   border-bottom: 2px solid whitesmoke;
+  width: 100%;
+  text-align: center;
 }
 
 h3 {
-  font-size: 1.75rem;
+  font-size: clamp(1.2rem, 3vw, 1.75rem);
   padding: 0.5em;
   margin: 0.5em;
+  text-align: center;
+  max-width: 600px;
 }
 
+/* Input field */
 input {
+  width: min(100%, 300px);
   border: 3px inset purple;
   border-radius: 10px;
-  padding: 0.5em;
-  margin: 0.5em;
-  font-family: Roboto, sans-serif;
+  padding: 0.75em 1em;
+  margin: 1em 0;
+  font-family: inherit;
   font-size: 1rem;
   outline: none;
+  transition: box-shadow 0.2s ease;
 }
 
 input:hover,
@@ -55,24 +52,47 @@ input:focus {
   box-shadow: 3px 3px #ff006e;
 }
 
+/* Re-usable button */
 button {
-  font-family: Roboto, sans-serif;
+  font-family: inherit;
   font-size: 1rem;
-  padding: 0.75em;
+  padding: 0.75em 1.5em;
   margin: 0.5em;
-  width: 10rem;
+  width: min(100%, 200px);
   border-radius: 10px;
   color: whitesmoke;
-}
-.output {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin: 0.5em;
-  padding: 0.5em;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-@media screen and (min-width: 500px) {
+button:hover {
+  transform: translateY(-2px);
+}
+
+/* API feedback */
+.output {
+  font-weight: bold;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  margin: 1em 0;
+  padding: 1em;
+  width: 100%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+}
+
+/* Media Queries */
+@media screen and (max-width: 480px) {
   body {
-    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .App {
+    padding: 0.5rem;
+  }
+
+  .output {
+    padding: 0.75em;
   }
 }

@@ -30,6 +30,13 @@ function App() {
     return regex.test(name);
   };
 
+  const handleFetchData = (e) => {
+    e.preventDefault();
+    if (e.key === "Enter") {
+      fetchData();
+    }
+  };
+
   // Perform API calls to fetch data
   const fetchData = async () => {
     if (!name || !isNameValid(name) || name.trim().length === 0) {
@@ -67,12 +74,13 @@ function App() {
   return (
     <div className="App">
       <h1 className="header">Predictable</h1>
-      <h3>Enter your name and we will predict your nationality, age and gender.</h3>
+      <h3>Enter your full name and we will predict your nationality, age and gender.</h3>
       <input
         ref={inputRef}
         placeholder="Please enter your name"
         value={name}
         onChange={(event) => setName(event.target.value)}
+        onKeyUp={handleFetchData}
         name={name}
         type="text"
         aria-required
