@@ -21,7 +21,7 @@ This application utilizes the below API's
 - React
 - Material UI
 
-### Something new I learnt
+### Lessons learned
 
 - The CSS property called "Backdrop-filter". Find out more in resources link
 - The CSS clamp() function. More in resources section
